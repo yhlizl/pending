@@ -1,0 +1,81 @@
+version: "3.5"
+
+x-app-common:
+  &app-common
+  depends_on:
+    - db
+    - redis
+  volumes:
+    - .:/usr/src/app:delegated
+    - /usr/src/app/node_modules
+
+x-env-common:
+  &env-common
+  DEBUG: 'True'
+  REDIS_URL: redis://redis:6379/0
+  DATABASE_URL: postgres://postgres@db/postgres
+  CHIP_FACTORY_API_ROOT: "${CHIP_FACTORY_API_ROOT}"
+  HUBSPOT_API_KEY: "${HUBSPOT_API_KEY}"
+  STITCH_API_KEY: "${STITCH_API_KEY}"
+  SEGMENT_BACKEND_KEY: "${SEGMENT_BACKEND_KEY}"
+  SEGMENT_FRONTEND_KEY: "${SEGMENT_FRONTEND_KEY}"
+  SENDGRID_API_KEY: "${SENDGRID_API_KEY}"
+  PYTHONBREAKPOINT: "ipdb.set_trace"
+  GOOGLE_TAG_MANAGER_ID: "${GOOGLE_TAG_MANAGER_ID}"
+  SENTRY_DJANGO_URL:
+  SENTRY_JS_URL:
+
+services:
+  db:
+    image: "postgres:10.11"
+    ports:
+      - "5432:5432"
+    networks:
+      - main_network
+
+  redis:
+    image: "redis:4.0"
+    networks:
+      - main_network
+
+  web:
+    << : *app-common
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    command: ./manage.py runserver 0.0.0.0:8000
+    environment:
+      << : *env-common
+      ALLOWED_HOSTS: "web localhost ${ALLOWED_HOSTS}"
+      PYTHONUNBUFFERED: 1
+      PYTHONDONTWRITEBYTECODE: 1
+    ports:
+      - "8000:8000"
+    networks:
+      - main_network
+
+  webpack:
+    << : *app-common
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    ports:
+      - "35729:35729" # for live reload
+    command: ./node_modules/.bin/webpack --config webpack.config.js --watch --mode development
+    networks:
+      - main_network
+
+  worker:
+    << : *app-common
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    environment:
+      << : *env-common
+      REMAP_SIGTERM: SIGQUIT
+    command: celery -A developers_site worker -l info --beat
+    networks:
+      - main_network
+networks:
+  main_network:
+    name: sifive_network

@@ -1,0 +1,13 @@
+[run]
+source =
+    .
+
+omit =
+    */migrations/*
+    */tests/*
+    developers_site/settings.py
+    developers_site/wsgi.py
+
+[report]
+skip_covered = True
+fail_under = 60

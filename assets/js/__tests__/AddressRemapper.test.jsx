@@ -1,0 +1,142 @@
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import { Provider } from "react-redux";
+import configureMockStore from "redux-mock-store";
+import RenderKnob from "../core-designer/tabpanels/Shared/RenderKnob2";
+
+test("Address Remapper", () => {
+  const map = new Map();
+  map.set("has_adr_remapr", "BooleanKnob");
+
+  const initialState = {
+    coreDesigner: {
+      webConfig: {
+        has_machine_mode: true,
+        has_user_mode: true,
+        multiplication_extension: true,
+        multiplication_performance: 1,
+        floating_point: "No FP",
+        floating_point_half_precision_present: false,
+        has_front_port: true,
+        front_port_protocol: "AXI4",
+        front_port_bus_width: 8,
+        front_port_axi_id_bit_width: 8,
+        enable_front_port_pass_through: false,
+        has_peripheral_port: true,
+        peripheral_port_protocol: "AXI4",
+        peripheral_port_bus_width: 8,
+        peripheral_port_base_addr: 536870912,
+        peripheral_port_size: 524288,
+        has_pmp: true,
+        hasDisableDebug: false,
+        has_ppd: false,
+        has_hca: false,
+        has_aes: false,
+        has_aes_mac: false,
+        has_sha: false,
+        has_trng: false,
+        has_pka: false,
+        pka_op_max_width: 384,
+        debug_hardware: true,
+        debug_interface: "JTAG",
+        debug_breakpoints: 4,
+        external_triggers: 0,
+        has_sba: false,
+        instruction_trace: false,
+        core_interfaces: 2,
+        has_tim_0: true,
+        tim_0_size: 32,
+        tim_0_base_addr: 2147483648,
+        tim_0_amo: false,
+        tim_0_pipeline_depth: 0,
+        tim_0_banks: 1,
+        has_tim_1: true,
+        tim_1_size: 32,
+        tim_1_base_addr: 2147516416,
+        tim_1_amo: false,
+        tim_1_pipeline_depth: 0,
+        tim_1_banks: 1,
+        has_adr_remapr: true,
+        adr_remapr_entries: 8,
+        adr_remapr_label_from_base_addr: "From Region Base Address",
+        adr_remapr_from_base_addr: 536870912,
+        adr_remapr_from_size: 4096,
+        adr_remapr_label_to_base_addr: "To Region Base Address",
+        adr_remapr_to_base_addr: 536870912,
+        adr_remapr_to_size: 4096,
+        adr_remapr_max_remapper_region_size: 64,
+        has_system_port_0: true,
+        system_port_0_protocol: "AXI4",
+        system_port_0_bus_width: 8,
+        system_port_0_axi_id_bit_width: 4,
+        system_port_0_base_addr: 1073741824,
+        system_port_0_size: 524288,
+        has_system_port_1: false,
+        system_port_1_protocol: "AXI4",
+        system_port_1_bus_width: 8,
+        system_port_1_axi_id_bit_width: 4,
+        system_port_1_base_addr: 1879048192,
+        system_port_1_size: 64,
+        has_clic: true,
+        clic_urgency_bits: 4,
+        clic_interrupt_count: 127,
+        has_clint: false,
+        local_interrupt_count: 0,
+        atomics_extension: true,
+        bit_manipulation_extension: true,
+        pmp_count: 4,
+        performance_counters: 2,
+        clock_gating: true,
+        has_separate_reset: false,
+        reset_scheme: "ResetSynchronous",
+        has_scie: false,
+        has_uicache: false,
+        uicache_size: 2,
+        uicache_line_size: 32,
+        has_beu: false,
+        has_ecc: false,
+        has_debug_snoop: false,
+        has_trace_encoder: false,
+        has_trace_encoder_sram_sink: true,
+        has_trace_encoder_atb_sink: false,
+        has_trace_encoder_pib_sink: false,
+        has_trace_encoder_sba_sink: false,
+        trace_encoder_pib_sink_width_bits: "4 bits + clock",
+        has_trace_encoder_pib_sink_clock_input: false,
+        trace_buffer_size: 256,
+        has_trace_encoder_timestamp: false,
+        trace_timestamp_width: 40,
+        trace_timestamp_source: "bus",
+        trace_encoder_inputs: 0,
+        trace_encoder_outputs: 0,
+        has_itc: false,
+        has_trace_encoder_pc_sampling: false,
+        trace_encoder_trace_format: "BTM",
+        has_sram_extraction: false,
+        has_clock_gate_extraction: false,
+        has_group_and_wrap: false,
+        sram_user_defined_inputs: 0,
+        sram_user_defined_outputs: 0,
+        has_rtlPrefix: false,
+        customizePrefix: "SiFive_",
+        version: "19.08p3p0",
+        ip_series: "S2",
+        design_name: "Untitled S2 Core",
+        base_core_ip: "S21",
+      },
+      knobMap: map,
+    },
+  };
+
+  const mockStore = (state = initialState) => configureMockStore()(state);
+  const store = mockStore(initialState);
+  console.log(store.getState());
+  const Compo = () => (
+    <Provider store={mockStore(initialState)}>
+      <RenderKnob internalName="has_adr_remapr" />
+    </Provider>
+  );
+  render(<Compo />);
+  const element = screen.queryByText(/Address Remapper/i);
+  expect(element).toBeDefined();
+});

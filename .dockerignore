@@ -1,0 +1,12 @@
+.env
+.venv
+.git
+developers_site/staticfiles/
+developers_site/file_storage/
+node_modules
+fcd/static/fcd/main.js
+assets/bundles/
+webpack-stats.json
+webpack-stats-ignore.json
+__pycache__
+*.pyc

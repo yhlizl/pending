@@ -1,0 +1,19 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": "assets/js",
+    "jsx": "react",
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2015",
+    "outDir": "./.ts",
+    "esModuleInterop": true,
+    "downlevelIteration": true
+  },
+  "include": [
+    "./assets/js/**/*"
+  ]
+}

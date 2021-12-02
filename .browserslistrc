@@ -1,0 +1,21 @@
+# https://github.com/browserslist/browserslist
+
+# This more or less follows the second recommendation from
+# https://github.com/browserslist/browserslist#best-practices
+# except with IE 11 explicitly removed and Firefox ESR added.
+last 2 versions
+> 0.25%
+Firefox ESR
+not dead
+not IE 11
+
+# Exclude Android 4.4.3-4.4.4.
+#
+# Android's non-Chrome browser versioning changed after Android 4.4, since they
+# switched to a continuously upating ("evergreen") version of Chromium. The
+# caniuse database only stores the latest version because of the "evergreen"
+# updating strategy. If we don't explicitly exclude Android < 5, then the "last
+# 2 versions" will always include Android 4.4.3-4.4.4 as well as the actual
+# latest version of the Android WebView.
+# https://github.com/browserslist/browserslist/issues/374
+not Android < 5
